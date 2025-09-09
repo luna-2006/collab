@@ -3,82 +3,177 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>2D Animator Dashboard</title>
+  <title>Sanjana's 2D Animation Portfolio</title>
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
+    /* Reset & base styles */
+    * {
       margin: 0;
       padding: 0;
-      background: #f4f4f4;
-      color: #333;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #111;
+      color: #f4f4f4;
+      overflow-x: hidden;
+    }
+
+    /* Opening Animation */
+    #intro {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 100%;
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      animation: introFadeOut 3s ease forwards;
+    }
+
+    #intro h1 {
+      font-size: 3rem;
+      color: #f39c12;
+      animation: slideIn 1.5s ease forwards;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(100px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes introFadeOut {
+      0% {
+        opacity: 1;
+        z-index: 1000;
+      }
+      80% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        z-index: -1;
+      }
     }
 
     header {
-      background: #2c3e50;
-      color: white;
+      background: #1c1c1c;
       padding: 20px;
       text-align: center;
     }
 
+    header h2 {
+      font-size: 2rem;
+      color: #f39c12;
+    }
+
+    header p {
+      font-size: 1rem;
+      color: #aaa;
+    }
+
     .container {
       max-width: 1200px;
-      margin: 20px auto;
-      padding: 10px;
+      margin: 40px auto;
+      padding: 0 20px;
       display: flex;
       flex-wrap: wrap;
-      gap: 20px;
       justify-content: center;
+      gap: 20px;
     }
 
     .card {
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      width: 300px;
+      background: #222;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      width: 280px;
+      transition: transform 0.3s ease;
       overflow: hidden;
-      transition: 0.3s ease;
     }
 
     .card:hover {
-      transform: scale(1.02);
+      transform: scale(1.05);
     }
 
-    .card-header {
-      background: #3498db;
-      color: white;
-      padding: 15px;
-      font-size: 1.2em;
+    .card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
     }
 
     .card-body {
       padding: 15px;
     }
 
-    .collection {
-      margin-top: 10px;
-      list-style: none;
-      padding: 0;
+    .card-body h3 {
+      color: #f1c40f;
+      margin-bottom: 10px;
     }
 
-    .collection li {
-      background: #ecf0f1;
-      padding: 8px;
-      margin: 5px 0;
-      border-radius: 4px;
+    .card-body p {
+      font-size: 0.9rem;
+      color: #ccc;
     }
 
-    .toggle-btn {
-      background: #2980b9;
-      border: none;
+    /* Closing animation (simulated with button) */
+    #closeBtn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #e74c3c;
       color: white;
-      padding: 10px 15px;
-      border-radius: 4px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 50px;
       cursor: pointer;
-      margin-top: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      font-size: 1rem;
+      transition: 0.3s ease;
     }
 
-    .hidden {
-      display: none;
+    #closeBtn:hover {
+      background: #c0392b;
+    }
+
+    #overlayExit {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 100%;
+      background: #000;
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #overlayExit.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    #overlayExit h1 {
+      color: #f39c12;
+      font-size: 3rem;
+      animation: fadeOut 2s ease forwards;
+    }
+
+    @keyframes fadeOut {
+      0% {opacity: 1;}
+      100% {opacity: 0;}
     }
 
     @media (max-width: 768px) {
@@ -90,71 +185,89 @@
 </head>
 <body>
 
+  <!-- Opening Animation -->
+  <div id="intro">
+    <h1>Welcome to Sanjana's World of 2D Animation</h1>
+  </div>
+
+  <!-- Header -->
   <header>
-    <h1>🎨 2D Animator Dashboard</h1>
-    <p>Explore the work of talented 2D animators and their animation collections</p>
+    <h2>Sanjana's 2D Animation Portfolio</h2>
+    <p>Explore my original 2D animation creations below 🎞️</p>
   </header>
 
-  <div class="container" id="animatorContainer">
-    <!-- Cards will be injected here by JavaScript -->
+  <!-- Portfolio Grid -->
+  <div class="container" id="projectContainer">
+    <!-- Cards generated by JS -->
+  </div>
+
+  <!-- Closing Button -->
+  <button id="closeBtn" onclick="closeAnimation()">Exit</button>
+
+  <!-- Exit Animation Overlay -->
+  <div id="overlayExit">
+    <h1>Thanks for visiting!</h1>
   </div>
 
   <script>
-    const animators = [
+    const projects = [
       {
-        name: "Hayao Miyazaki",
-        collections: ["Spirited Away", "My Neighbor Totoro", "Howl's Moving Castle", "Princess Mononoke"]
+        title: "The Enchanted Forest",
+        description: "A mystical journey through a hand-drawn enchanted forest.",
+        image: "https://placekitten.com/400/200"
       },
       {
-        name: "Genndy Tartakovsky",
-        collections: ["Samurai Jack", "Primal", "Dexter's Laboratory"]
+        title: "Urban Dream",
+        description: "Animated short showcasing city life from a dreamy perspective.",
+        image: "https://placebear.com/400/200"
       },
       {
-        name: "Rebecca Sugar",
-        collections: ["Steven Universe", "Steven Universe: The Movie"]
+        title: "Bubble Trouble",
+        description: "A comedic 2D loop animation of soap bubbles causing chaos!",
+        image: "https://placebeard.it/400x200"
       },
       {
-        name: "Max Fleischer",
-        collections: ["Betty Boop", "Popeye the Sailor", "Gulliver's Travels"]
+        title: "Time Traveler",
+        description: "Sci-fi themed 2D animation exploring time and motion.",
+        image: "https://placekitten.com/401/200"
       },
       {
-        name: "Don Bluth",
-        collections: ["The Land Before Time", "An American Tail", "The Secret of NIMH"]
+        title: "The Balloon Girl",
+        description: "A short emotional narrative animated frame by frame.",
+        image: "https://placebear.com/401/200"
       }
     ];
 
-    const container = document.getElementById('animatorContainer');
+    const container = document.getElementById("projectContainer");
 
-    animators.forEach((animator, index) => {
+    projects.forEach(project => {
       const card = document.createElement('div');
       card.className = 'card';
-
       card.innerHTML = `
-        <div class="card-header">${animator.name}</div>
+        <img src="${project.image}" alt="${project.title}" />
         <div class="card-body">
-          <button class="toggle-btn" onclick="toggleCollection(${index})">Show Collection</button>
-          <ul class="collection hidden" id="collection-${index}">
-            ${animator.collections.map(title => `<li>${title}</li>`).join('')}
-          </ul>
+          <h3>${project.title}</h3>
+          <p>${project.description}</p>
         </div>
       `;
-
       container.appendChild(card);
     });
 
-    function toggleCollection(index) {
-      const collection = document.getElementById(`collection-${index}`);
-      const button = collection.previousElementSibling;
+    function closeAnimation() {
+      const overlay = document.getElementById("overlayExit");
+      overlay.classList.add("show");
 
-      if (collection.classList.contains('hidden')) {
-        collection.classList.remove('hidden');
-        button.textContent = "Hide Collection";
-      } else {
-        collection.classList.add('hidden');
-        button.textContent = "Show Collection";
-      }
+      setTimeout(() => {
+        window.close(); // Will not work in most browsers unless opened via JS
+      }, 2000);
     }
   </script>
 
 </body>
 </html>
+
+     
+ 
+   
+ 
+  
